@@ -5,13 +5,14 @@ import java.util.Scanner;
 
 public class BD1projekt { 
 
-	static String menuText="Select option:	"
-			+"\n1. Display current committee"	//widok 1/1
-			+"\n2 Change committee member"		//trigger 1/1, update				
-			+"\n3 Display all members"			//tabela 1/2
-			+"\n4 Display projects"				//tabela 2/2
-			+"\n5 xxx"
-			+"\nx Exit";
+	static String menuText=
+			 "\n1 Display current committee"		//widok 1/1, select
+			+"\n2 Change committee member"			//trigger 1/1, update				
+			+"\n3 Display committee changes history"//tabela 1/2, select, two tables
+			+"\n4 Display projects"					//tabela 2/2, select
+			+"\n5 Display contributions and most frequent role"	//aggregate many tables
+			+"\nx Exit"
+			+ "\n? List commands";
 	
 	public static void main(String[] args) throws ClassNotFoundException {
 		Connection connection = null;
@@ -31,7 +32,7 @@ public class BD1projekt {
 			e.printStackTrace();}
 	
 		
-		//debug section
+		//test section
 		{
 		//DBFunctions.ShowCommittee(connection); //ok
 		 
@@ -41,17 +42,20 @@ public class BD1projekt {
 		 
 		// DBFunctions.ListProjectWithStatuses(connection, 4);
 		 
-		 DBFunctions.ChangeCommitteeMember(connection, "President", 38);
+		 //DBFunctions.ChangeCommitteeMember(connection, "President", 38);
 		 
 		 
 		}
-		 
+		 //print commands for the first time
+		System.out.println(menuText);
+		
 		boolean exit=false;
 		char choice = 0;
 		Scanner scanner = new Scanner(System.in);
-		
+		//ask for input until 
 		while(!exit)
 		{
+			System.out.print("Select option: ");
 			try{
 				scanner.reset();
 			choice = scanner.nextLine().charAt(0);
@@ -76,6 +80,31 @@ public class BD1projekt {
 				break;
 			}
 			
+			case '3':
+			{
+				DBFunctions.CommitteeHistory(connection);
+				break;
+			}
+			
+			case '4':
+			{
+				System.out.println("Choose desired status of projects to list:");
+				System.out.println("-1 - Abandoned\t"
+						+ "0 -Any\t"
+						+ "1 - Idea\t"
+						+ "2 - In Progress\t"
+						+ "3 - Prototype\t"
+						+ "4 - Realeased");
+				int status = Integer.parseInt(scanner.nextLine());
+				
+				DBFunctions.ListProjectWithStatuses(connection, status);
+				break;
+			}
+			
+			
+			case '5':
+				DBFunctions.ListMemberContributionsAndRoles( connection);
+				break;
 				
 			case '?':
 				System.out.println(menuText);
