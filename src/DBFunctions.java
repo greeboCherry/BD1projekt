@@ -1,7 +1,6 @@
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+
 import java.util.ArrayList;
 
 
@@ -27,14 +26,26 @@ public class DBFunctions {
 			}
   	}
 	
-	/*Wypisz kto udziela sie w jakim projekcie, pelniac jaka role i jaki jest jego status*/
+	/*Wypisz kto udziela sie w jakim projekcie, pelniac jaka role i jaki jest jego status
+	 * @notworking!
+	 * */
 	static void ListContributionsWithStatuses(Connection connection)
 	{
 		
 		ArrayList<String> output = null;
+	
+		String sql="select m.LAST_NAME, p.PROJECT_NAME, r.ROLE_NAME, ps.STATUS_NAME from MEMBERS m, PROJECTS p, Roles r, CONTRIBUTIONS c, PROJECT_STATUSES ps where (m.MEMBER_ID = c.MEMBER_ID) and (p.PROJECT_ID = c.PROJECT_ID) and (r.ROLE_ID = c.ROLE_ID) and (p.STATUS_ID = ps.STATUS_ID)order by p.STATUS_ID desc, p.PROJECT_NAME";
+				
+		
+//		String sql="select m.LAST_NAME, p.PROJECT_NAME, r.ROLE_NAME, ps.STATUS_NAME "
+//				+ "from MEMBERS m left join CONTRIBUTIONS c on m.MEMBER_ID = c.MEMBER_ID "
+//				+ "left join PROJECTS p on p.PROJECT_ID = c.PROJECT_ID "
+//				+ "left join ROLES r on r.ROLE_ID = c.ROLE_ID "
+//				+ "left join PROJECT_STATUSES ps on ps.STATUS_ID = p.STATUS_ID "
+//				+ "order by p.STATUS_ID desc, p.PROJECT_NAME";
 		
         try {
-			output = DBOperations.executeQuery(connection, "select m.LAST_NAME, p.PROJECT_NAME, r.ROLE_NAME, ps.STATUS_NAME from MEMBERS m left join CONTRIBUTIONS c on (m.MEMBER_ID = c.MEMBER_ID) left join PROJECTS p on (p.PROJECT_ID = c.PROJECT_ID) left join ROLES r on r.ROLE_ID = c.ROLE_ID right join PROJECT_STATUSES ps on ps.STATUS_ID = p.STATUS_ID order by p.STATUS_ID desc,p.PROJECT_NAME");
+			output = DBOperations.executeQuery(connection, sql);
 			
 			System.out.println("Member\t Project\t Role\t Status");
 			for (String string : output) {
@@ -65,6 +76,23 @@ public class DBFunctions {
 		}
 		
 	}
+	/*Zmien czlonka zarzadu*/
+	static void ChangeCommitteeMember(Connection connection, String title, int new_id)
+	{
+		try {
+			String sql= "update COMMITTEE_BOARD SET MEMBER_ID= ? where TITLE= ?";
+			PreparedStatement stmt = connection.prepareStatement(sql);
+			
+			stmt.setInt(1, new_id);
+			stmt.setString(2, title);
+			stmt.executeUpdate();
+	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 
 
 	/*Wypisz projekty o danym statusie
@@ -74,15 +102,10 @@ public class DBFunctions {
 	static void ListProjectWithStatuses(Connection connection, int status_id)
 	{
 		try {
+			String sql= "select p.PROJECT_NAME, count(m.LAST_NAME), ps.STATUS_NAME from MEMBERS m left join CONTRIBUTIONS c on (m.MEMBER_ID = c.MEMBER_ID) left join PROJECTS p on (p.PROJECT_ID = c.PROJECT_ID) left join PROJECT_STATUSES ps on ps.STATUS_ID = p.STATUS_ID"
+			+(status_id!=0 ? " where (p.STATUS_ID="+status_id+")":"")+" group by p.PROJECT_NAME, ps.STATUS_NAME";
 			
-			ArrayList<String> output = null;
-			
-			
-			String sql= "select p.PROJECT_NAME, count(m.LAST_NAME) from MEMBERS m left join CONTRIBUTIONS c on (m.MEMBER_ID = c.MEMBER_ID) left join PROJECTS p on (p.PROJECT_ID = c.PROJECT_ID)"
-			+(status_id!=0 ? "where (p.STATUS_ID="+status_id+") group by p.PROJECT_NAME":" " );
-			
-			Statement stmt = connection.prepareStatement(sql);
-			//stmt.
+			ArrayList<String> output = DBOperations.executeQuery(connection, sql);
 			
 			
 			for (String string : output) {
