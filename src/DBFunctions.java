@@ -35,15 +35,7 @@ public class DBFunctions {
 		ArrayList<String> output = null;
 	
 		String sql="select m.LAST_NAME, p.PROJECT_NAME, r.ROLE_NAME, ps.STATUS_NAME from MEMBERS m, PROJECTS p, Roles r, CONTRIBUTIONS c, PROJECT_STATUSES ps where (m.MEMBER_ID = c.MEMBER_ID) and (p.PROJECT_ID = c.PROJECT_ID) and (r.ROLE_ID = c.ROLE_ID) and (p.STATUS_ID = ps.STATUS_ID)order by p.STATUS_ID desc, p.PROJECT_NAME";
-				
-		
-//		String sql="select m.LAST_NAME, p.PROJECT_NAME, r.ROLE_NAME, ps.STATUS_NAME "
-//				+ "from MEMBERS m left join CONTRIBUTIONS c on m.MEMBER_ID = c.MEMBER_ID "
-//				+ "left join PROJECTS p on p.PROJECT_ID = c.PROJECT_ID "
-//				+ "left join ROLES r on r.ROLE_ID = c.ROLE_ID "
-//				+ "left join PROJECT_STATUSES ps on ps.STATUS_ID = p.STATUS_ID "
-//				+ "order by p.STATUS_ID desc, p.PROJECT_NAME";
-		
+						
         try {
 			output = DBOperations.executeQuery(connection, sql);
 			
@@ -150,25 +142,6 @@ public class DBFunctions {
 				+ "group by m.LAST_NAME "
 				+ "order by STATS_MODE(r.role_name), count(c.ROLE_ID) desc";
 
-			
-			//String sql = "select MEMBERS.LAST_NAME, count(CONTRIBUTIONS.ROLE_ID) from MEMBERS left join CONTRIBUTIONS on (MEMBERS.MEMBER_ID = CONTRIBUTIONS.MEMBER_ID) group by MEMBERS.LAST_NAME";
-		
-			//DEBUG
-//			String sql = "select MEMBERS.LAST_NAME, CONTRIBUTIONS.CONTRIBUTION_ID "
-//					+ "from MEMBERS left join CONTRIBUTIONS on (MEMBERS.MEMBER_ID = CONTRIBUTIONS.MEMBER_ID)";
-//		
-//			String sql = "select MEMBERS.LAST_NAME, CONTRIBUTIONS.CONTRIBUTION_ID "
-//					+ "from MEMBERS, CONTRIBUTIONS where (MEMBERS.MEMBER_ID = CONTRIBUTIONS.MEMBER_ID)";
-//			
-			
-//			String sql ="select m.LAST_NAME, count(c.ROLE_ID), STATS_MODE(r.role_name) "
-//					+ "from MEMBERS m, CONTRIBUTIONS c,  ROLES r "
-//					+ "where (m.MEMBER_ID = c.MEMBER_ID) and r.ROLE_ID=c.ROLE_ID "
-//					+ "group by m.LAST_NAME order by STATS_MODE(r.role_name), count(c.ROLE_ID) desc";
-		
-		
-			
-			
 		ArrayList<String> output = DBOperations.executeQuery(connection, sql);
 		
 		System.out.println("Member\t Cont count\t Favourite role");

@@ -10,20 +10,13 @@ public class DBOperations {
 	 * @return Connection
 	 * @throws SQLException
 	 */
-	
-	/*public static Connection connect(String username, String password) throws SQLException{
-		Connection connection = null;
-		connection = DriverManager.getConnection(
-				"jdbc:oracle:thin:@156.17.43.90:1521:xe", username,
-				password);//open the connection
-		return connection;
-	}*/
-	
+		
 	public static Connection connect(String username, String password) throws SQLException{
 		Connection connection = null;
 		connection = DriverManager.getConnection(
 				"jdbc:oracle:thin:@localhost:1521:TKGames", username, password);//open the connection
 		return connection;
+		//"jdbc:oracle:thin:@156.17.43.90:1521:xe" //<- use for lab login
 	}
 	
 	/**

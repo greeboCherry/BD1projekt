@@ -34,18 +34,6 @@ public class BD1projekt {
 			e.printStackTrace();}
 	
 		
-		//test section
-		{
-		//DBFunctions.ShowCommittee(connection); //ok
-		 
-		 //DBFunctions.ListContributionsWithStatuses(connection); //spend whole hours debugging, not working. WAIT! it's working? why?
-
-		 //DBFunctions.AddMember(connection, "Julia", "Szulc","bb@onet.pl");
-		 
-		// DBFunctions.ListProjectWithStatuses(connection, 4);//ok
-		 
-		 //DBFunctions.ChangeCommitteeMember(connection, "President", 38);//ok		 
-		}
 		 //print commands for the first time
 		System.out.println(menuText);
 		
