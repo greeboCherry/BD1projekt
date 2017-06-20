@@ -10,7 +10,9 @@ public class BD1projekt {
 			+"\n2 Change committee member"			//trigger 1/1, update				
 			+"\n3 Display committee changes history"//tabela 1/2, select, two tables
 			+"\n4 Display projects"					//tabela 2/2, select
-			+"\n5 Display contributions and most frequent role"	//aggregate many tables
+			+"\n5 Display members contribution count and the most frequent role" //aggregate many tables
+			+"\n6 Display all contributions"		//select, many tables
+			+"\n7 Add new member"					//insert
 			+"\nx Exit"
 			+ "\n? List commands";
 	
@@ -36,15 +38,13 @@ public class BD1projekt {
 		{
 		//DBFunctions.ShowCommittee(connection); //ok
 		 
-		 //DBFunctions.ListContributionsWithStatuses(connection); //spend whole hours debugging, not working
+		 //DBFunctions.ListContributionsWithStatuses(connection); //spend whole hours debugging, not working. WAIT! it's working? why?
 
 		 //DBFunctions.AddMember(connection, "Julia", "Szulc","bb@onet.pl");
 		 
-		// DBFunctions.ListProjectWithStatuses(connection, 4);
+		// DBFunctions.ListProjectWithStatuses(connection, 4);//ok
 		 
-		 //DBFunctions.ChangeCommitteeMember(connection, "President", 38);
-		 
-		 
+		 //DBFunctions.ChangeCommitteeMember(connection, "President", 38);//ok		 
 		}
 		 //print commands for the first time
 		System.out.println(menuText);
@@ -106,6 +106,20 @@ public class BD1projekt {
 				DBFunctions.ListMemberContributionsAndRoles( connection);
 				break;
 				
+			case '6':
+				DBFunctions.ListContributionsWithStatuses(connection);
+				break;
+			
+			case '7':
+			{
+				System.out.println("Put new member first name, last name and email:");
+				String fname = scanner.next();
+				String lname = scanner.next();
+				String email = scanner.next();
+				DBFunctions.AddMember(connection, fname, lname, email);
+				
+				break;
+			}
 			case '?':
 				System.out.println(menuText);
 				break;

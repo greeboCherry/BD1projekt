@@ -144,7 +144,7 @@ public class DBFunctions {
 	{
 		
 		try {
-		String sql="select m.LAST_NAME, count(c.ROLE_ID), STATS_MODE(c.ROLE_ID) "
+		String sql="select m.LAST_NAME, count(c.ROLE_ID), STATS_MODE(r.role_name) "
 				+ "from MEMBERS m left join CONTRIBUTIONS c on (m.MEMBER_ID = c.MEMBER_ID) "
 				+ "left join ROLES r on r.ROLE_ID=c.ROLE_ID "
 				+ "group by m.LAST_NAME "
