@@ -60,10 +60,15 @@ public class DBFunctions {
 			stmt.setString(1, first_name);
 			stmt.setString(2, last_name);
 			stmt.setString(3, email);
-			
-			stmt.executeUpdate();
+			if(stmt.executeUpdate()>0)
+			{
+				System.out.println("New member added");
+			}
+			else
+				System.out.println("There was some error");
 	
 		} catch (Exception e) {
+			System.out.println("There was very specific error");
 			e.printStackTrace();
 		}
 		
@@ -136,15 +141,15 @@ public class DBFunctions {
 	{
 		
 		try {
-		String sql="select m.LAST_NAME, count(c.ROLE_ID), STATS_MODE(r.role_name) "
+		String sql="select m.Member_ID, m.LAST_NAME, count(c.ROLE_ID), STATS_MODE(r.role_name) "
 				+ "from MEMBERS m left join CONTRIBUTIONS c on (m.MEMBER_ID = c.MEMBER_ID) "
 				+ "left join ROLES r on r.ROLE_ID=c.ROLE_ID "
-				+ "group by m.LAST_NAME "
+				+ "group by m.Member_ID, m.LAST_NAME "
 				+ "order by STATS_MODE(r.role_name), count(c.ROLE_ID) desc";
 
 		ArrayList<String> output = DBOperations.executeQuery(connection, sql);
 		
-		System.out.println("Member\t Cont count\t Favourite role");
+		System.out.println("Member ID and name\t Cont count\t Favourite role");
 		for (String string : output) {
 			System.out.println(string);
 		}

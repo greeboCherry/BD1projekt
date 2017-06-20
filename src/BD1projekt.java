@@ -4,13 +4,13 @@ import java.util.Scanner;
 
 
 public class BD1projekt { 
-
+	//holds instructions for user to select from
 	static String menuText=
 			 "\n1 Display current committee"		//widok 1/1, select
 			+"\n2 Change committee member"			//trigger 1/1, update				
 			+"\n3 Display committee changes history"//tabela 1/2, select, two tables
 			+"\n4 Display projects"					//tabela 2/2, select
-			+"\n5 Display members contribution count and the most frequent role" //aggregate many tables
+			+"\n5 Display members with contribution count and the most frequent role" //aggregate many tables
 			+"\n6 Display all contributions"		//select, many tables
 			+"\n7 Add new member"					//insert
 			+"\nx Exit"
@@ -18,7 +18,7 @@ public class BD1projekt {
 	
 	public static void main(String[] args) throws ClassNotFoundException {
 		Connection connection = null;
-//open up connection
+		//open up connection
 		try{
 			DBOperations.checkLib();		
 		} catch (ClassNotFoundException e) 
@@ -27,7 +27,7 @@ public class BD1projekt {
 					e.printStackTrace();
 				return;}
 		try {
-			  connection= DBOperations.connect(ConnectionData.login, ConnectionData.password);
+			  connection= DBOperations.connect(ConnectionData.url, ConnectionData.login, ConnectionData.password);
 			 
 		} catch (SQLException e) {
 			System.err.println("Wrong login/password.");
@@ -37,6 +37,7 @@ public class BD1projekt {
 		 //print commands for the first time
 		System.out.println(menuText);
 		
+		//init variables typical for menu
 		boolean exit=false;
 		char choice = 0;
 		Scanner scanner = new Scanner(System.in);
@@ -101,9 +102,9 @@ public class BD1projekt {
 			case '7':
 			{
 				System.out.println("Put new member first name, last name and email:");
-				String fname = scanner.next();
-				String lname = scanner.next();
-				String email = scanner.next();
+				String fname = scanner.nextLine();
+				String lname = scanner.nextLine();
+				String email = scanner.nextLine();
 				DBFunctions.AddMember(connection, fname, lname, email);
 				
 				break;
@@ -131,6 +132,7 @@ public class BD1projekt {
 				break;
 			}
 		}
+		//cleanup 
 		scanner.close();
 		try {
 			connection.close();

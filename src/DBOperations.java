@@ -5,18 +5,19 @@ public class DBOperations {
 
 	/**
 	 * Connects to the DB server.
+	 * @param url TODO
 	 * @param username
 	 * @param password
 	 * @return Connection
 	 * @throws SQLException
 	 */
 		
-	public static Connection connect(String username, String password) throws SQLException{
+	public static Connection connect(String url, String username, String password) throws SQLException{
 		Connection connection = null;
-		connection = DriverManager.getConnection(
-				"jdbc:oracle:thin:@localhost:1521:TKGames", username, password);//open the connection
+	
+		connection = DriverManager.getConnection( url, username, password);//open the connection
 		return connection;
-		//"jdbc:oracle:thin:@156.17.43.90:1521:xe" //<- use for lab login
+		
 	}
 	
 	/**
